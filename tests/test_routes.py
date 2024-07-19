@@ -263,6 +263,15 @@ class TestProductRoutes(TestCase):
         for product in data:
             self.assertEqual(product["available"], True)
 
+    def test_method_not_allowed(self):
+        """Query Method not allowed"""
+        products = self._create_products(5)
+        test_name = products[0].name
+        response = self.client.delete(
+            BASE_URL, query_string=f"name={quote_plus(test_name)}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
     ######################################################################
     # Utility functions
     ######################################################################
